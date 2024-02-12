@@ -660,6 +660,7 @@ sudo useradd -s /sbin/nologin --system -g postgres_exporter postgres_exporter
 sudo mkdir /opt/postgres_exporter &&  cd /opt/postgres_exporter
 curl -s https://api.github.com/repos/prometheus-community/postgres_exporter/releases/latest | grep browser_download_url | grep linux-amd64  | cut -d '"' -f 4 | sudo wget -qi -
 sudo tar -xzvf postgres_exporter* && cd postgres_exporter*-amd64
+sudo rm -r postgres_exporter*-amd64*
 
 sudo mv postgres_exporter /usr/local/bin/
 sudo chmod +x /usr/local/bin/postgres_exporter
@@ -693,6 +694,7 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
+sudo chown postgres_exporter:postgres_exporter /opt/postgres_exporter/postgres_exporter.env
 sudo chown postgres_exporter:postgres_exporter /etc/systemd/system/postgres_exporter.service
 sudo systemctl daemon-reload
 sudo systemctl start postgres_exporter
