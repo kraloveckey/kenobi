@@ -195,7 +195,7 @@ Group=node_exporter
 Type=simple
 Restart=always
 SyslogIdentifier=node_exporter
-ExecStart=/usr/local/bin/node_exporter --web.listen-address="127.0.0.1:9100"
+ExecStart=/usr/local/bin/node_exporter --collector.systemd --web.listen-address="127.0.0.1:9100"
  
 [Install]
 WantedBy=multi-user.target
