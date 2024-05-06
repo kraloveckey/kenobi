@@ -119,7 +119,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2;
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
  
         root /var/www/moodle;
         index index.php index.html index.htm;

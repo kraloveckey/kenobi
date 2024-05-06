@@ -127,7 +127,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name prometheus.dns.com;
  
         ssl_certificate /etc/nginx/ssl/server.crt;
@@ -223,7 +228,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name node-example.dns.com;
   
         ssl_certificate /etc/nginx/ssl/server.crt;
@@ -449,7 +459,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name nginx-example.dns.com;
  
         ssl_certificate /etc/nginx/ssl/server.crt;
@@ -585,7 +600,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name mysqld-example.dns.com;
   
         ssl_certificate /etc/nginx/ssl/server.crt;
@@ -715,7 +735,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name postgres-example.dns.com;
  
         ssl_certificate /etc/nginx/ssl/server.crt;
@@ -840,7 +865,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name nextcloud-example.dns.com;
  
         ssl_certificate /etc/nginx/ssl/server.crt;
@@ -932,7 +962,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2;
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
  
         server_name example-rabbitmq.dns.com;
  
@@ -1165,7 +1200,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name moodle-example.dns.com;
   
         ssl_certificate /etc/nginx/ssl/server.crt;
@@ -1257,7 +1297,12 @@ server {
 }
  
 server {
-        listen 443 ssl http2; #Enable ssl end H2\SPDY
+        # Enable QUIC and HTTP/3.
+        listen 443 quic reuseport;
+
+        # Enable HTTP/2.
+        listen 443 ssl;
+        http2 on;
         server_name example.dns.com;
  
         ssl_certificate /etc/nginx/ssl/server.crt;
