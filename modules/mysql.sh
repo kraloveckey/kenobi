@@ -38,7 +38,7 @@ STRONG_PASSWORD=`< /dev/urandom tr -dc _#A-Z-a-z-0-9 | head -c${1:-24}`
 
 sudo mysql --user=root << EOFMYSQLSECURE
 SELECT plugin from mysql.user where User='root';
-UPDATE mysql.user SET plugin = 'mysql_native_password' WHERE user = 'root' AND plugin = 'auth_socket';
+UPDATE mysql.user SET plugin = 'caching_sha2_password' WHERE user = 'root' AND plugin = 'auth_socket';
 FLUSH PRIVILEGES;
 SELECT User,plugin from mysql.user where User='root';
 ALTER USER root@localhost identified by '${STRONG_PASSWORD}';
