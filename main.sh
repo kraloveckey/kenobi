@@ -99,7 +99,7 @@ monitoring() {
     sudo chmod 700 ${MODULES}/monitoring.sh && sudo bash ${MODULES}/monitoring.sh
 }
 
-monitoring() { 
+fail2ban() { 
     sudo chmod 700 ${MODULES}/fail2ban.sh && sudo bash ${MODULES}/fail2ban.sh
 }
 
