@@ -99,6 +99,10 @@ monitoring() {
     sudo chmod 700 ${MODULES}/monitoring.sh && sudo bash ${MODULES}/monitoring.sh
 }
 
+monitoring() { 
+    sudo chmod 700 ${MODULES}/fail2ban.sh && sudo bash ${MODULES}/fail2ban.sh
+}
+
 # Menu Function.
 menu() {
 
@@ -117,6 +121,7 @@ $(green_print '10)') artillery
 $(blue_print '11)') limits
 $(magenta_print '12)') moodle
 $(cyan_print '13)') monitoring
+$(green_print '14)') fail2ban
 $(red_print '0)') Exit
 \nChoose an option: "
     read -r ans
@@ -174,6 +179,10 @@ $(red_print '0)') Exit
         ;;
     13)
         monitoring
+        menu
+        ;;
+    14)
+        fail2ban
         menu
         ;;
     0)

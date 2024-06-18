@@ -230,7 +230,7 @@ EOF
 #----------------------------------------------------------------------------------------
 
 sudo cat <<\EOF > /etc/nginx/sec.conf
-# Let's Encrypt SSL ACME Challenge Requirements.
+# Lets Encrypt SSL ACME Challenge Requirements.
 # ACME Challenge Rule.
 location /.well-known/acme-challenge {
     allow all;
@@ -239,7 +239,28 @@ location /.well-known/acme-challenge {
     autoindex    on;
 }
 
+location @empty {
+    empty_gif;
+}
+
+location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+    try_files $uri /index.php?$args;
+}
+
 # Wordpress specific rules.
+# Deny access to wp-content folders for suspicious files
+location ~* ^/(wp-content)/(.*?)\.(zip|gz|tar|bzip2|7z)\$ {
+    deny all;
+}
+location ~ ^/wp-content/uploads/sucuri {
+    deny all;
+}
+location ~ ^/wp-content/updraft {
+    deny all;
+}
 # Block access to anything non image/video/music/document related from your uploads folder.
 location ~* ^/wp-content/uploads/.*.(asp|cgi|htm|html|js|jsp|php|pl|py|sh|shtml|swf)$ {
     return 444;
@@ -261,13 +282,99 @@ location ~* ^/*.(conf|sql)$ {
 location ~* /wp-content/.*.txt$ {
     return 444;
 }
+# WordPress: deny wp-content, wp-includes php files.
+location ~* ^/(?:wp-content|wp-includes)/.*\.php$ {
+    deny all;
+}
+# WordPress: deny wp-content/uploads nasty stuff.
+location ~* ^/wp-content/uploads/.*\.(?:s?html?|php|js|swf)$ {
+    deny all;
+}
+# WordPress: deny general stuff.
+location ~* ^/(?:xmlrpc\.php|wp-links-opml\.php|wp-config\.php|wp-config-sample\.php|wp-comments-post\.php|readme\.html|license\.txt)$ {
+    deny all;
+}
+# Disable wp-config.txt
+location = /wp-config.txt {
+    deny all;
+    access_log off;
+    log_not_found off;
+}
+
+# Nginx block wpscann on plugins folder.
+location ~* ^/wp-content/plugins/.+\.(txt|log|md)$ {
+    deny all;
+    error_page 403 =404 / ;
+}
+
+# Block access to install.php and upgrade.php.
+location ^~ /wp-admin/install.php {
+    deny all;
+    error_page 403 =404 / ;
+}
+location ^~ /wp-admin/upgrade.php {
+    deny all;
+    error_page 403 =404 / ;
+}
+
+# Deny access to any files with a .php extension in the uploads directory.
+# Works in sub-directory installs and also in multisite network.
+# Keep logging the requests to parse later (or to pass to firewall utilities such as fail2ban).
+location ~* /(?:uploads|files)/.*\.php$ {
+    deny all;
+}
+
+# Stop scann for the follow files on plugins folder.
+location ~* ^/wp-content/plugins/.+\.(txt|log|md)$ {
+    deny all;
+    error_page 403 =404 / ;
+}
+
+# Stop scann for the follow files on themes folder
+location ~* ^/wp-content/themes/.+\.(txt|log|md)$ {
+    deny all;
+    error_page 403 =404 / ;
+}
+
+# This module will allow us to pattern match certain key files and inject random text in the files that
+# is non-destructive / non-invasive and will most importantly alter the md5sum calculated on such files. All transparent to WPScan.
+location ~* ^/(license.txt|wp-includes/(.*)/.+\.(js|css)|wp-admin/(.*)/.+\.(js|css))$ {
+    sub_filter_types text/css text/javascript text/plain;
+    sub_filter_once on;
+    sub_filter ';' '; /* $msec */ ';
+}
+
+# Direct PHP File Access.
+# If somehow, a hacker successfully sneaks in a PHP file onto your site,
+# they’ll be able to run this file by loading file which effectively becomes a backdoor to infiltrate your site.
+# We should disable direct access to any PHP files by adding the following rules.
+location ~* /(?:uploads|files|wp-content|wp-includes|akismet)/.*.php$ {
+    deny all;
+    access_log off;
+    log_not_found off;
+}
 # End wordpress specific rules.
+
+# Nginx headers restrictions
+# Directives to send expires headers and turn off 404 error logging.
+location ~* ^.+\.(curl|heic|swf|tiff|rss|atom|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
+    access_log off;
+    log_not_found off;
+    expires max;
+}
+
+# HTML send expires headers.
+location ~* \.(html)$ {
+  expires 7d;
+  access_log off;
+  add_header Cache-Control "public";
+}
+# End nginx headers restrictions
 
 # Block xmlrpc.php requests.
 location /xmlrpc.php {
     return 444;
 }
-
 # Deny access to any files with a .php extension in any uploads / files directory.
 # Add more folder names to protect as you like.
 location ~* /(?:uploads|files)/.*\.php$ {
@@ -283,7 +390,7 @@ location ~* \.(pl|cgi|py|sh|lua)\$ {
 
 # Similar to PHP file, a dotfile like .htaccess, .user.ini, and .git may contain sensitive information.
 # To be on the safer side, it’s better to disable direct access to these files.
-location ~ /\.(svn|git)/* {
+location ~ /\.(svn|git|DS_Store|htaccess|htpasswd)/* {
     return 444;
 }
 location ~ /\.ht {

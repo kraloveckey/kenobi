@@ -77,16 +77,10 @@ PermitEmptyPasswords no
 # some PAM modules and threads)
 ChallengeResponseAuthentication no
   
-# Turn on privilege separation
-UsePrivilegeSeparation yes
-  
 # Prevent the use of insecure home directory and key file permissions
 StrictModes yes
   
-# Turn on reverse name checking
-VerifyReverseMapping yes
-  
-X11Forwarding yes
+X11Forwarding no
 X11DisplayOffset 10
 PrintMotd no
 PrintLastLog yes
