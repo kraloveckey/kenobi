@@ -60,7 +60,7 @@ SyslogFacility AUTH
 LogLevel INFO
   
 # Authentication:
-LoginGraceTime 45
+LoginGraceTime 0
 PermitRootLogin no
   
 PubkeyAuthentication yes
@@ -126,6 +126,6 @@ echo -e "\n"
 
 sudo pip3 install ssh-audit
 echo -e "\nSSH-AUDIT TEST...\n"
-ssh-audit localhost -p221
+ssh-audit 127.0.0.1 -p221
 
 exit 0
