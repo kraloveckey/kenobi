@@ -55,6 +55,11 @@ php_menu ()
             sudo apt install php8.2 php8.2-apcu php8.2-bcmath php8.2-bz2 php8.2-cli php8.2-common php8.2-curl php8.2-fpm php8.2-gd php8.2-gmp php8.2-dev \
             php8.2-imagick php8.2-intl php8.2-imap php8.2-ldap php8.2-mbstring php8.2-mcrypt php8.2-mysql php8.2-redis php8.2-soap php8.2-xml php8.2-xmlrpc php8.2-zip -y
             break;;
+        "8.3")
+            PHP_VERSION="8.3"
+            sudo apt install php8.3 php8.3-apcu php8.3-bcmath php8.3-bz2 php8.3-cli php8.3-common php8.3-curl php8.3-fpm php8.3-gd php8.3-gmp php8.3-dev \
+            php8.3-imagick php8.3-intl php8.3-imap php8.3-ldap php8.3-mbstring php8.3-mcrypt php8.3-mysql php8.3-redis php8.3-soap php8.3-xml php8.3-xmlrpc php8.3-zip -y
+            break;;
         *)
             PHP_VERSION=""
             echo -e "\nWrong option! Select right PHP version another time...\n"
@@ -65,7 +70,7 @@ php_menu ()
 }
 
 # Declare the array with php versions.
-PHP_VERSIONS=('7.3' '7.4' '8.0' '8.1' '8.2')
+PHP_VERSIONS=('7.3' '7.4' '8.0' '8.1' '8.2' '8.3')
 echo -e "\nSelect PHP version:\n"
 php_menu "${PHP_VERSIONS[@]}"
 
@@ -232,7 +237,7 @@ else
     sudo mkdir -p /opt/audit && sudo touch /opt/audit/warn-php${PHP_VERSION}.sh
 fi
 
-sudo cat <<EOF > /opt/audit/warn-php${PHP_VERSION}.sh
+sudo cat <<\EOF > /opt/audit/warn-php${PHP_VERSION}.sh
 #!/usr/bin/env bash
 
 set -o nounset
@@ -244,7 +249,8 @@ MAIL_SMTP="smtp.gmail.com"
 MAIL_SMTP_PORT="465"
 MAIL_AUTH="SERVICE_AUTH@gmail.com"
 MAIL_PASS="SERVICE_AUTH_PASS"
-MAIL_PASS="/opt/audit/php_warn.txt"
+EMAIL="/opt/audit/php_warn.txt"
+PHP_VERSION="8.3"
 
 PHP_LOG="/var/log/php${PHP_VERSION}-fpm.log"
 
@@ -256,18 +262,18 @@ for i in {6..1}; do
 done
 
 # print all lines starting from the first one that matches one of the dates in the pattern
-awk "/$pattern/,0" ${PHP_LOG} | grep "WARNING: \[pool www]" > ${MAIL_PASS}
+awk "/$pattern/,0" ${PHP_LOG} | grep "WARNING: \[pool www]" > ${EMAIL}
 
 if [ -s ${MAIL_PASS} ]; then
         # The file is not-empty.
-        echo -e "PHP ALERT: php${PHP_VERSION}-fpm.service was restarted!\n\nPlease see ${PHP_LOG} :)" > ${MAIL_PASS}
+        echo -e "PHP ALERT: php${PHP_VERSION}-fpm.service was restarted!\n\nPlease see ${PHP_LOG} :)" > ${EMAIL}
         /usr/bin/systemctl restart php${PHP_VERSION}-fpm.service
-        swaks -f ${MAIL_FROM} -t ${MAIL_TO} -s ${MAIL_SMTP} --auth-user=${MAIL_AUTH} --auth-password=${MAIL_PASS} -tlsc -p ${MAIL_SMTP_PORT} --body ${MAIL_PASS} --header "Subject: PHP Overloaded" --add-header "Content-Type: text/plain; charset=UTF-8" --h-From: '"PHP Alert" <'${MAIL_FROM}'>'
+        swaks -f ${MAIL_FROM} -t ${MAIL_TO} -s ${MAIL_SMTP} --auth-user=${MAIL_AUTH} --auth-password=${MAIL_PASS} -tlsc -p ${MAIL_SMTP_PORT} --body ${EMAIL} --header "Subject: PHP Overloaded" --add-header "Content-Type: text/plain; charset=UTF-8" --h-From: '"PHP Alert" <'${MAIL_FROM}'>'
 else
         echo "Empty :)"
 fi
 
-rm ${MAIL_PASS}
+rm ${EMAIL}
 
 exit 0
 EOF

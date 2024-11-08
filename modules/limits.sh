@@ -125,7 +125,7 @@ kernel.sysrq=0
 vm.max_map_count=524288
 vm.overcommit_memory=1
 vm.zone_reclaim_mode=0
-vm.vfs_cache_pressure=200
+fs.inotify.max_user_watches=1048576
 EOF
 
 sudo sysctl -p
