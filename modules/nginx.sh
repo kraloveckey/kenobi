@@ -683,6 +683,7 @@ map $http_user_agent $block_ua {
     ~*Curious                                1;
     ~*Curl                                   1;
     ~*Custo                                  1;
+    ~*Custom-AsyncHttpClient                 1;
     ~*CWS_proxy                              1;
     ~*DatabaseDriverMysqli                   1;
     ~*DataCha0s                              1;
@@ -782,6 +783,8 @@ map $http_user_agent $block_ua {
     ~*G-i-g-a-b-o-t                          1;
     ~*Go-Ahead-Got-It                        1;
     ~*Go\-Ahead\-Got\-It                     1;
+    ~*Go-http-client                         1;
+    ~*Go\-http\-client                       1;
     ~*Go\!Zilla                              1;
     ~*GoZilla                                1;
     ~*Go!Zilla                               1;
@@ -870,6 +873,7 @@ map $http_user_agent $block_ua {
     ~*kanagawa                               1;
     ~*Kenjin\ Spider                         1;
     ~*Kenjin.Spider                          1;
+    ~*Keydrop                                1;
     ~*Keyword\ Density                       1;
     ~*Keyword.Density                        1;
     ~*Kinza                                  1;
@@ -1317,6 +1321,7 @@ map $http_user_agent $block_ua {
     ~*Who.is\ Bot                            1;
     ~*Widow                                  1;
     ~*WinHTTrack                             1;
+    ~*WinHttp\-Autoproxy\-Service            1;
     ~*WinInet                                1;
     ~*WISENutbot                             1;
     ~*WiseGuys\ Robot                        1;
@@ -1352,6 +1357,7 @@ map $http_user_agent $block_ua {
     ~*zermelo                                1;
     ~*Zeus                                   1;
     ~*zgrab                                  1;
+    ~*zgrab/0.x                              1;
     ~*Zitebot                                1;
     ~*zh\-CN                                 1;
     ~*ZmEu                                   1;
