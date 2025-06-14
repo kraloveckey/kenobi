@@ -4,8 +4,6 @@
   <a href="https://github.com/kraloveckey/kenobi"><img src="img/kenobi.png" width=150 height=140 lt="Kenobi"></a>
 </h1>
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/kraloveckey)
-
 > Modular bash-scripts to install web-servers, different tools (db, monitoring, php etc.), settings the environment in Ubuntu or make audit the system. 
 
 For start the project, clone the repository and run `main.sh`:
@@ -25,3 +23,9 @@ In the menu, select the desired script.
 </p>
 
 <br>
+
+---
+
+<a href="https://www.paypal.com/donate/?hosted_button_id=GWWLEXEF3XL92">
+  <img src="https://raw.githubusercontent.com/kraloveckey/kraloveckey/refs/heads/main/.assets/paypal-donate-button.png" alt="Donate with PayPal" width="225" height="100"/>
+</a>
